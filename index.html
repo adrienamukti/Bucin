@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Dini Cinta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+        }
+        .button-container {
+            position: relative;
+            width: 90vw;
+            height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .button-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        button {
+            font-size: 1rem;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        #btn_gamau {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hai Cantik!</h1>
+    <img src="https://c.tenor.com/Z8ezUHZzcLoAAAAC/love.gif" alt="Love GIF" />
+    <h1>Maukah kamu kiss aku terus?</h1>
+    <div class="button-container">
+        <div class="button-wrapper">
+            <button id="btn_mau" onclick="alert('I LOVE YOU')">Mau</button>
+            <button id="btn_gamau" onclick="gamau(this)">Gamau</button>
+        </div>
+    </div>
+
+    <script>
+        function gamau(button) {
+            var container = document.querySelector('.button-container');
+            var containerRect = container.getBoundingClientRect();
+            var buttonRect = button.getBoundingClientRect();
+
+            // Menghitung jarak perpindahan maksimum
+            var maxDistance = Math.min(containerRect.width, containerRect.height) / 0.2;
+
+            // Menghitung perpindahan pada sumbu x dan y (acak)
+            var dx = (Math.random() - 0.5) * 2 * maxDistance;
+            var dy = (Math.random() - 0.5) * 2 * maxDistance;
+
+            // Menghitung posisi baru
+            var newX = buttonRect.left - containerRect.left + dx;
+            var newY = buttonRect.top - containerRect.top + dy;
+
+            // Memastikan tombol tetap dalam container
+            newX = Math.max(0, Math.min(newX, containerRect.width - buttonRect.width));
+            newY = Math.max(0, Math.min(newY, containerRect.height - buttonRect.height));
+
+            // Mengatur posisi awal
+            button.style.position = 'absolute';
+            var startX = buttonRect.left - containerRect.left;
+            var startY = buttonRect.top - containerRect.top;
+
+            // Animasi perpindahan
+            var duration = 300; // durasi dalam milidetik
+            var start = null;
+
+            function animate(timestamp) {
+                if (!start) start = timestamp;
+                var progress = timestamp - start;
+                var percentage = Math.min(progress / duration, 1);
+
+                var currentX = startX + (newX - startX) * percentage;
+                var currentY = startY + (newY - startY) * percentage;
+
+                button.style.left = currentX + 'px';
+                button.style.top = currentY + 'px';
+
+                if (progress < duration) {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>
